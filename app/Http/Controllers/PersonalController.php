@@ -1,10 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+//el problemita con la funcion imagenupload es de usar esta libreria
+use Illuminate\Http\Request;
 
 use App\Models\personal;
 use App\Http\Requests\StorepersonalRequest;
 use App\Http\Requests\UpdatepersonalRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 class PersonalController extends Controller
 {
@@ -73,15 +78,19 @@ class PersonalController extends Controller
     {
         $personal=personal::find($id);
         if(!$personal){
-            return response()->json('usuario no encontrado',400);
+            return response()->json('usuario no encontrado',409);
         }
         $personal->delete();
         return $this->index();
     }
 
+
+
+
+
     public function imageUpload(Request $request){
         $imagen=$request->file('image');
-        $path_img='usuario';
+        $path_img='personal';
         $imageName = $path_img.'/'.$imagen->getClientOriginalName();
         try {
             Storage::disk('public')->put($imageName, File::get($imagen));
@@ -92,7 +101,11 @@ class PersonalController extends Controller
         return response()->json(['image' => $imageName]);
     }
     public function image($nombre){
-        return response()->download(public_path('storage').'/usuario/'.$nombre,$nombre);
+        return response()->download(public_path('storage').'/personal/'.$nombre,$nombre);
     }
+
+
+
+
 
 }

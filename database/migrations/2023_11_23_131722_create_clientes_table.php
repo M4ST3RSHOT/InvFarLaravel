@@ -21,6 +21,7 @@ return new class extends Migration
             $table->bigInteger('ci');
             $table->string('correo');
             $table->bigInteger('telefono');
+            $table->string('imagen');
 
         });
     }

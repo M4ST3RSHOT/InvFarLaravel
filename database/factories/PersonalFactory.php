@@ -31,6 +31,7 @@ class PersonalFactory extends Factory
         'telefono'=>fake()->numberBetween($min=60000000,$max=99999999),
         'salario'=>fake()->numberBetween($min=2000,$max=2500),
         'farmacia_id'=>'1',
+        'imagen'=>'12345.jpg'
         ];
     }
 }

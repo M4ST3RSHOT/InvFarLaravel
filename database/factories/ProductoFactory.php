@@ -16,6 +16,7 @@ class ProductoFactory extends Factory
      */
     public function definition(): array
     {
+        $imagen='producto.jpg';
         return [
         'nombre'=>fake()->word(),
         'descripcion'=>fake()->sentence(),
@@ -24,7 +25,7 @@ class ProductoFactory extends Factory
         'categoria_id'=>fake()->numberBetween($min=1,$max=6),
         'precio_compra'=>fake()->randomFloat(2, 1, 100),
         'precio_venta'=>fake()->randomFloat(2, 1, 100),
-
+        'imagen'=>$imagen,
         ];
     }
 }

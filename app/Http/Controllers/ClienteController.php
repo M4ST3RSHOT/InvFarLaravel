@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
 use App\Models\cliente;
 use App\Http\Requests\StoreclienteRequest;
 use App\Http\Requests\UpdateclienteRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ClienteController extends Controller
 {
@@ -77,5 +79,21 @@ class ClienteController extends Controller
         }
         $cliente->delete();
         return $this->index();
+    }
+
+    public function imageUpload(Request $request){
+        $imagen=$request->file('image');
+        $path_img='cliente';
+        $imageName = $path_img.'/'.$imagen->getClientOriginalName();
+        try {
+            Storage::disk('public')->put($imageName, File::get($imagen));
+        }
+        catch (\Exception $exception) {
+            return response('error',400);
+        }
+        return response()->json(['image' => $imageName]);
+    }
+    public function image($nombre){
+        return response()->download(public_path('storage').'/cliente/'.$nombre,$nombre);
     }
 }

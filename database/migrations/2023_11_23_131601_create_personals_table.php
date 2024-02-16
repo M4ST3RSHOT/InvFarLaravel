@@ -26,7 +26,7 @@ return new class extends Migration
             $table->bigInteger('telefono');
             $table->float('salario');
             $table->unsignedBigInteger('farmacia_id');
-
+            $table->string('imagen');
             $table->foreign('farmacia_id')->references('id')->on('farmacias')->onDelete('cascade');
         });
     }

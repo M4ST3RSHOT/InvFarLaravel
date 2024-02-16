@@ -18,6 +18,7 @@ class ClienteFactory extends Factory
     {
         $nombre=fake()->firstName();
         $cuenta=fake()->safeEmailDomain();
+        $imagen='cliente.jpg';
         $correo=$nombre.'@'.$cuenta;
         return [
         'nombre'=>$nombre,
@@ -26,6 +27,7 @@ class ClienteFactory extends Factory
         'ci'=>fake()->numberBetween($min=6000000,$max=9999999),
         'correo'=>$correo,
         'telefono'=>fake()->numberBetween($min=60000000,$max=99999999),
+        'imagen'=>$imagen,
         ];
     }
 }

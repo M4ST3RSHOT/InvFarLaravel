@@ -10,5 +10,6 @@ class categoria extends Model
     use HasFactory;
     protected $fillable=[
         'nombre',
+        'imagen',
     ];
 }

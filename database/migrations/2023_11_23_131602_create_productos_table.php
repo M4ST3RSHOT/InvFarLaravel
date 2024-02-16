@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float('precio_compra');
             $table->float('precio_venta');
             $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('cascade');
+            $table->string('imagen');
         });
     }
 

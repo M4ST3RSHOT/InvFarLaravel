@@ -32,12 +32,30 @@ class DatabaseSeeder extends Seeder
 
         proveedor::factory(10)->create();
 
-        categoria::create(array('nombre'=>'Pildoras'));
-        categoria::create(array('nombre'=>'Inyectable'));
-        categoria::create(array('nombre'=>'Suero'));
-        categoria::create(array('nombre'=>'Crema'));
-        categoria::create(array('nombre'=>'Golosina'));
-        categoria::create(array('nombre'=>'Medicamento'));
+        categoria::create(array(
+            'nombre'=>'Pildoras',
+            'imagen'=>'pildoras.jpg'
+        ));
+        categoria::create(array(
+            'nombre'=>'Inyectables',
+            'imagen'=>'inyectables.jpg'
+        ));
+        categoria::create(array(
+            'nombre'=>'Sueros',
+            'imagen'=>'sueros.jpg'
+        ));
+        categoria::create(array(
+            'nombre'=>'Cremas',
+            'imagen'=>'cremas.jpg'
+        ));
+        categoria::create(array(
+            'nombre'=>'Golosinas',
+            'imagen'=>'golosinas.jpg'
+        ));
+        categoria::create(array(
+            'nombre'=>'Medicamentos',
+            'imagen'=>'medicamentos.jpg'
+        ));
 
         // personal::factory(5)->create();
 
@@ -52,7 +70,8 @@ class DatabaseSeeder extends Seeder
             'direccion'=>'bolivar y potosi',
             'telefono'=>'76133846',
             'salario'=>'3500',
-            'farmacia_id'=>'1'));
+            'farmacia_id'=>'1',
+            'imagen'=>'YamilAguirre.jpg'));
 
         personal::create(array(
             'nombre'=>'raul',
@@ -65,7 +84,8 @@ class DatabaseSeeder extends Seeder
             'direccion'=>'bolivar y potosi',
             'telefono'=>'76133846',
             'salario'=>'3500',
-            'farmacia_id'=>'1'));
+            'farmacia_id'=>'1',
+            'imagen'=>'RaulAguirre.jpg'));
 
         adquiere::factory(40)->create();
 
