@@ -9,7 +9,7 @@ use App\Http\Requests\StorepersonalRequest;
 use App\Http\Requests\UpdatepersonalRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-
+use Illuminate\Support\Facades\Hash;
 
 class PersonalController extends Controller
 {
@@ -32,17 +32,21 @@ class PersonalController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorepersonalRequest $request)
+    public function store(Request $request)
     {
         $request['password']=Hash::make($request['password']);
-        $personal=personal::create($request->all());
-        return response()->json($personal);
+
+        $personal=personal::create($request->all());//esto devuelve a la vista el registro que se esta creando en store
+
+        $personal2=personal::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+
+        return response()->json($personal2);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(personal $personal)
+    public function show(personal $id)
     {
         $personal=personal::find($id);
         if($personal)
@@ -62,7 +66,7 @@ class PersonalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepersonalRequest $request, personal $personal)
+    public function update(Request $request,$id)
     {
         $personal=personal::find($id);
         if($personal){
@@ -74,7 +78,7 @@ class PersonalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(personal $personal)
+    public function destroy($id)
     {
         $personal=personal::find($id);
         if(!$personal){
