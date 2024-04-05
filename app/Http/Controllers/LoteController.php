@@ -27,17 +27,17 @@ class LoteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorepersonalRequest $request)
+    public function store(Request $request)
     {
-        $request['password']=Hash::make($request['password']);
         $lote=lote::create($request->all());
-        return response()->json($lote);
+        $lote2=lote::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+        return response()->json($lote2);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(lote $lote)
+    public function show(lote $id)
     {
         $lote=lote::find($id);
         if($lote)
@@ -57,7 +57,7 @@ class LoteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepersonalRequest $request, lote $lote)
+    public function update(Request $request, $id)
     {
         $lote=lote::find($id);
         if($lote){
@@ -69,7 +69,7 @@ class LoteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(lote $lote)
+    public function destroy($id)
     {
         $lote=lote::find($id);
         if(!$lote){

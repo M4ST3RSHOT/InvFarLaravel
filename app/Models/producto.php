@@ -17,5 +17,12 @@ class producto extends Model
         'precio_compra',
         'precio_venta',
         'imagen',
+        'stock',
     ];
+
+    // public function scopelistar_nombres($query,$id){
+    //     return $query
+    //                 ->select('productos.*')
+    //                 ->get();
+    // }
 }

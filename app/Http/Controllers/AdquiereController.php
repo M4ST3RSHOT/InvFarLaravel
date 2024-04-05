@@ -27,17 +27,17 @@ class AdquiereController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorepersonalRequest $request)
+    public function store(Request $request)
     {
-        $request['password']=Hash::make($request['password']);
         $adquiere=adquiere::create($request->all());
-        return response()->json($adquiere);
+        $adquiere2=adquiere::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+        return response()->json($adquiere2);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(adquiere $adquiere)
+    public function show(adquiere $id)
     {
         $adquiere=adquiere::find($id);
         if($adquiere)
@@ -57,7 +57,7 @@ class AdquiereController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepersonalRequest $request, adquiere $adquiere)
+    public function update(Request $request, $id)
     {
         $adquiere=adquiere::find($id);
         if($adquiere){
@@ -69,7 +69,7 @@ class AdquiereController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(adquiere $adquiere)
+    public function destroy($id)
     {
         $adquiere=adquiere::find($id);
         if(!$adquiere){

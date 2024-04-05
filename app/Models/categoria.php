@@ -12,4 +12,12 @@ class categoria extends Model
         'nombre',
         'imagen',
     ];
+    public function scopeProductos($query,$id){
+        return $query
+                    ->join('productos','categorias.id','productos.categoria_id')
+                    ->select('categorias.nombre','productos.*')
+                    ->where('categorias.id',$id)
+                    ->get();
+    }
+    //CONSEJO, trata las tablas con el nombre con el cual esta en el MYSQL es decir => productos, categorias, adquieres etc, siempre con la s
 }

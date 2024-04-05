@@ -27,17 +27,17 @@ class FarmaciaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorepersonalRequest $request)
+    public function store(Request $request)
     {
-        $request['password']=Hash::make($request['password']);
         $farmacia=farmacia::create($request->all());
-        return response()->json($farmacia);
+        $farmacia2=farmacia::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+        return response()->json($farmacia2);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(farmacia $farmacia)
+    public function show(farmacia $id)
     {
         $farmacia=farmacia::find($id);
         if($farmacia)
@@ -57,7 +57,7 @@ class FarmaciaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepersonalRequest $request, farmacia $farmacia)
+    public function update(Request $request,$id)
     {
         $farmacia=farmacia::find($id);
         if($farmacia){
@@ -69,7 +69,7 @@ class FarmaciaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(farmacia $farmacia)
+    public function destroy( $id)
     {
         $farmacia=farmacia::find($id);
         if(!$farmacia){

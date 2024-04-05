@@ -27,17 +27,18 @@ class ProveedorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorepersonalRequest $request)
+    public function store(Request $request)
     {
-        $request['password']=Hash::make($request['password']);
         $proveedor=proveedor::create($request->all());
-        return response()->json($proveedor);
+        $proveedor2=proveedor::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+
+        return response()->json($proveedor2);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(proveedor $proveedor)
+    public function show(proveedor $id)
     {
         $proveedor=proveedor::find($id);
         if($proveedor)
@@ -57,7 +58,7 @@ class ProveedorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepersonalRequest $request, proveedor $proveedor)
+    public function update(Request $request, $id)
     {
         $proveedor=proveedor::find($id);
         if($proveedor){
@@ -69,7 +70,7 @@ class ProveedorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(proveedor $proveedor)
+    public function destroy( $id)
     {
         $proveedor=proveedor::find($id);
         if(!$proveedor){

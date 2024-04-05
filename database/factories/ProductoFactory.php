@@ -26,6 +26,7 @@ class ProductoFactory extends Factory
         'precio_compra'=>fake()->randomFloat(2, 1, 100),
         'precio_venta'=>fake()->randomFloat(2, 1, 100),
         'imagen'=>$imagen,
+        'stock'=>5,
         ];
     }
 }

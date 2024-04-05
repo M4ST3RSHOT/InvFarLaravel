@@ -29,17 +29,17 @@ class ClienteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorepersonalRequest $request)
+    public function store(Request $request)
     {
-        $request['password']=Hash::make($request['password']);
         $cliente=cliente::create($request->all());
-        return response()->json($cliente);
+        $cliente2=cliente::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+        return response()->json($cliente2);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(cliente $cliente)
+    public function show(cliente $id)
     {
         $cliente=cliente::find($id);
         if($cliente)
@@ -59,7 +59,7 @@ class ClienteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepersonalRequest $request, cliente $cliente)
+    public function update(Request $request, $id)
     {
         $cliente=cliente::find($id);
         if($cliente){
@@ -71,7 +71,7 @@ class ClienteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(cliente $cliente)
+    public function destroy( $id)
     {
         $cliente=cliente::find($id);
         if(!$cliente){

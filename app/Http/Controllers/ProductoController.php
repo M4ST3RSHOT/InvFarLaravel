@@ -7,6 +7,7 @@ use App\Http\Requests\StoreproductoRequest;
 use App\Http\Requests\UpdateproductoRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
@@ -29,17 +30,18 @@ class ProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorepersonalRequest $request)
+    public function store(Request $request)
     {
-        $request['password']=Hash::make($request['password']);
         $producto=producto::create($request->all());
-        return response()->json($producto);
+        $producto2=producto::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+
+        return response()->json($producto2);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(producto $producto)
+    public function show($id)
     {
         $producto=producto::find($id);
         if($producto)
@@ -59,11 +61,28 @@ class ProductoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepersonalRequest $request, producto $producto)
+    public function update(Request $request, $id)
     {
         $producto=producto::find($id);
         if($producto){
             $producto=$producto->update($request->all());
+        }
+        return response()->json($producto);
+    }
+
+    public function updatestock(Request $request, $id)
+    {
+        $producto=producto::find($id);
+        if ($producto) {
+            // Obtener el stock enviado en la solicitud
+            $nuevoStock = $request->input('stock');
+    
+            // Calcular el stock actualizado restando el stock enviado del stock actual del producto
+            $stockActualizado = $producto->stock - $nuevoStock;
+    
+            // Actualizar el stock del producto
+            $producto->stock = $stockActualizado;
+            $producto->save();
         }
         return $this->index();
     }
@@ -71,7 +90,7 @@ class ProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(producto $producto)
+    public function destroy( $id)
     {
         $producto=producto::find($id);
         if(!$producto){
@@ -95,5 +114,10 @@ class ProductoController extends Controller
     }
     public function image($nombre){
         return response()->download(public_path('storage').'/producto/'.$nombre,$nombre);
+    }
+
+    public function listar_nombres(){
+        $consulta = Producto::select('productos.nombre')->get();
+        return response()->json($consulta);
     }
 }

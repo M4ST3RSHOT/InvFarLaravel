@@ -29,19 +29,19 @@ class CategoriaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorepersonalRequest $request)
+    public function store(Request $request)
     {
-        $request['password']=Hash::make($request['password']);
         $categoria=categoria::create($request->all());
-        return response()->json($categoria);
+        $cateogira2=categoria::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+        return response()->json($cateogira2);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(categoria $categoria)
+    public function show(categoria $id)
     {
-        $categoria=categoria::find($id);
+        $id=categoria::find($id);
         if($categoria)
             return response()->json($categoria);
         else
@@ -59,7 +59,7 @@ class CategoriaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatepersonalRequest $request, categoria $categoria)
+    public function update(Request $request,$id)
     {
         $categoria=categoria::find($id);
         if($categoria){
@@ -71,7 +71,7 @@ class CategoriaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(categoria $categoria)
+    public function destroy($id)
     {
         $categoria=categoria::find($id);
         if(!$categoria){
@@ -96,4 +96,11 @@ class CategoriaController extends Controller
     public function image($nombre){
         return response()->download(public_path('storage').'/categoria/'.$nombre,$nombre);
     }
+
+
+    public function productos($id){
+        $productos=Categoria::Productos($id);
+        return response()->json($productos);
+    }
+
 }

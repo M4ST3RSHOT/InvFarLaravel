@@ -46,7 +46,7 @@ class PersonalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(personal $id)
+    public function show($id)
     {
         $personal=personal::find($id);
         if($personal)
@@ -106,6 +106,11 @@ class PersonalController extends Controller
     }
     public function image($nombre){
         return response()->download(public_path('storage').'/personal/'.$nombre,$nombre);
+    }
+
+    public function listar_nombres(){
+        $consulta=DB::select('SELECT p.* FROM personals p');
+        return response()->json($consulta);
     }
 
 

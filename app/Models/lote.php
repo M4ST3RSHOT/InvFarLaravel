@@ -12,6 +12,6 @@ class lote extends Model
         'stock',
         'fecha_expiracion',
         'adquiere_id',
-        'producto_id'
+        'producto_id',
     ];
 }

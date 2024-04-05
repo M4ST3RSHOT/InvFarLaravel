@@ -13,4 +13,5 @@ class detalle extends Model
         'cantidad',
         'factura_id',
     ];
+    
 }
