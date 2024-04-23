@@ -14,6 +14,7 @@ use App\Models\lote;
 use App\Models\factura;
 use App\Models\detalle;
 use App\Models\cliente;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,12 +33,14 @@ class DatabaseSeeder extends Seeder
 
         proveedor::create(array(
             'nombre'=>'INTI',
+            'cinit'=>'123456789',
             'telefono'=>'789789789',
             'direccion'=>'BolivarPotosi',
         ));
 
         proveedor::create(array(
             'nombre'=>'SAVE',
+            'cinit'=>'789456123',
             'telefono'=>'789789789',
             'direccion'=>'PotosiBolivar',
         ));
@@ -67,11 +70,11 @@ class DatabaseSeeder extends Seeder
             'imagen'=>'medicamentos.jpg'
         ));
 
-        personal::create(array(
+        user::create(array(
             'nombre'=>'yamil',
             'apellido'=>'aguirre',
             'password'=>'yamilito123',
-            'tipo'=>'administrador',
+            'tipo'=>'Administrador',
             'fecha_inicio'=>'1999-03-03',
             'ci'=>'76133846',
             'correo'=>'yamilito123@gmail.com',
@@ -81,11 +84,11 @@ class DatabaseSeeder extends Seeder
             'farmacia_id'=>'1',
             'imagen'=>'YamilAguirre.jpg'));
 
-        personal::create(array(
+        user::create(array(
             'nombre'=>'raul',
             'apellido'=>'aguirre',
             'password'=>'raulito123',
-            'tipo'=>'ventas',
+            'tipo'=>'Ventas',
             'fecha_inicio'=>'1999-03-03',
             'ci'=>'76133846',
             'correo'=>'raulito123@gmail.com',
@@ -188,7 +191,7 @@ class DatabaseSeeder extends Seeder
             'subtotal'=>'200',
             'descuento'=>'10',
             'total'=>'180',
-            'personal_id'=>'1',
+            'user_id'=>'1',
             'cliente_id'=>'1',));
 
         factura::create(array(
@@ -196,7 +199,7 @@ class DatabaseSeeder extends Seeder
             'subtotal'=>'200',
             'descuento'=>'10',
             'total'=>'180',
-            'personal_id'=>'1',
+            'user_id'=>'1',
             'cliente_id'=>'1',));
         
         factura::create(array(
@@ -204,7 +207,7 @@ class DatabaseSeeder extends Seeder
             'subtotal'=>'400',
             'descuento'=>'10',
             'total'=>'360',
-            'personal_id'=>'2',
+            'user_id'=>'2',
             'cliente_id'=>'2',));
         
         factura::create(array(
@@ -212,7 +215,7 @@ class DatabaseSeeder extends Seeder
             'subtotal'=>'400',
             'descuento'=>'10',
             'total'=>'360',
-            'personal_id'=>'2',
+            'user_id'=>'2',
             'cliente_id'=>'2',));
 
         factura::create(array(
@@ -220,7 +223,7 @@ class DatabaseSeeder extends Seeder
             'subtotal'=>'400',
             'descuento'=>'10',
             'total'=>'360',
-            'personal_id'=>'2',
+            'user_id'=>'2',
             'cliente_id'=>'2',));
 
 
@@ -281,35 +284,35 @@ class DatabaseSeeder extends Seeder
             'proveedor_id'=>'1',
             'fecha'=>'2024-02-05',
             'montototal'=>'300',
-            'personal_id'=>'1',));
+            'user_id'=>'1',));
 
             
         adquiere::create(array(
             'proveedor_id'=>'2',
             'fecha'=>'2024-02-06',
             'montototal'=>'1500',
-            'personal_id'=>'1',));
+            'user_id'=>'1',));
 
             
         adquiere::create(array(
             'proveedor_id'=>'2',
             'fecha'=>'2024-02-07',
             'montototal'=>'2500',
-            'personal_id'=>'2',));
+            'user_id'=>'2',));
 
             
         adquiere::create(array(
             'proveedor_id'=>'1',
             'fecha'=>'2024-02-07',
             'montototal'=>'2000',
-            'personal_id'=>'2',));
+            'user_id'=>'2',));
 
             
         adquiere::create(array(
             'proveedor_id'=>'1',
             'fecha'=>'2024-02-08',
             'montototal'=>'2500',
-            'personal_id'=>'2',));
+            'user_id'=>'2',));
 
 
         lote::create(array(
@@ -371,6 +374,7 @@ class DatabaseSeeder extends Seeder
             'fecha_expiracion'=>'2026-02-08',
             'adquiere_id'=>'5',
             'producto_id'=>'2',));
+
 
     }
 }

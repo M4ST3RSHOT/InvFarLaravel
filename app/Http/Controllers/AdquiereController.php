@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\adquiere;
 use App\Http\Requests\StoreadquiereRequest;
 use App\Http\Requests\UpdateadquiereRequest;
@@ -31,7 +32,7 @@ class AdquiereController extends Controller
     {
         $adquiere=adquiere::create($request->all());
         $adquiere2=adquiere::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
-        return response()->json($adquiere2);
+        return response()->json(['id' => $adquiere->id]);
     }
 
     /**

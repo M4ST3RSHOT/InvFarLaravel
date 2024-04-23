@@ -18,10 +18,10 @@ return new class extends Migration
             $table->float('montototal');
             $table->date('fecha');
             $table->unsignedBigInteger('proveedor_id');
-            $table->unsignedBigInteger('personal_id');
+            $table->unsignedBigInteger('user_id');
 
             $table->foreign('proveedor_id')->references('id')->on('proveedors')->onDelete('cascade');
-            $table->foreign('personal_id')->references('id')->on('personals')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
 
         });

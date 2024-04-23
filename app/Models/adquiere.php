@@ -12,6 +12,6 @@ class adquiere extends Model
         'proveedor_id',
         'fecha',
         'montototal',
-        'personal_id',
+        'user_id',
     ];
 }

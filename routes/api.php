@@ -12,6 +12,8 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\DetalleController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 
 /*
@@ -25,10 +27,7 @@ use App\Http\Controllers\ClienteController;
 |
 */
 
-Route::resource('/personal', PersonalController::class);
-
-Route::get('/personal/imagen/{imagen}',[PersonalController::class,'image']);
-Route::post('/personal/imagen/',[PersonalController::class,'imageUpload']);
+Route::post('login', [AuthController::class,'login']);
 
 Route::resource('/adquiere', AdquiereController::class);
 Route::resource('/categoria', CategoriaController::class);
@@ -41,11 +40,6 @@ Route::get('/categoria/productos/{id}',[CategoriaController::class,'productos'])
 Route::resource('/detalle', DetalleController::class);
 Route::resource('/factura', FacturaController::class);
 
-Route::get('/factura/producto/', [FacturaController::class,'detalledeventa_producto']);
-Route::get('/factura/detalle/{id}', [FacturaController::class,'detalledeventa_detalle']);
-Route::get('/factura/personal/{id}', [FacturaController::class,'detalledeventa_personal']);
-Route::get('/factura/factura/{id}', [FacturaController::class,'detalledeventa_factura']);
-
 Route::resource('/farmacia', FarmaciaController::class);
 Route::resource('/lote', LoteController::class);
 Route::resource('/producto', ProductoController::class);
@@ -55,13 +49,25 @@ Route::post('/producto/imagen/',[ProductoController::class,'imageUpload']);
 Route::get('/producto/listar/',[ProductoController::class,'listar_nombres']);
 Route::put('/producto/stock/{id}',[ProductoController::class,'updatestock']);
 
+Route::put('/producto/stock/{id}',[ProductoController::class,'updatestockplus']);
+
 Route::resource('/proveedor', ProveedorController::class);
 Route::resource('/cliente', ClienteController::class);
 
 Route::get('/cliente/imagen/{imagen}',[ClienteController::class,'image']);
 Route::post('/cliente/imagen/',[ClienteController::class,'imageUpload']);
 
+Route::get('/user/imagen/{imagen}',[UserController::class,'image']);
+Route::post('/user/imagen/',[UserController::class,'imageUpload']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:api'], function() {
+      
+      Route::get('logout', 'AuthController@logout');
+      Route::get('user', 'AuthController@user');
+      
+Route::resource('/user', UserController::class);
+
+
 });
+
+

@@ -36,12 +36,19 @@ return [
             'throw' => false,
         ],
 
+        // 'public' => [ //el problemita de las rutas de las imagenes estaba con esto, creaba una carpeta "storage" y dentro tenia otra carpeta public donde almacenaba las imagenes, cambiandolo almacena la carpeta storage directo en public principal
+        //     'driver' => 'local',
+        //     'root' => storage_path('app/public'),
+        //     'url' => env('APP_URL').'/storage',
+        //     'visibility' => 'public',
+        //     'throw' => false,
+        // ],
+
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => public_path('storage'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
-            'throw' => false,
         ],
 
         's3' => [

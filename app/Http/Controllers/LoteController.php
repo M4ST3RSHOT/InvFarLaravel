@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\lote;
 use App\Http\Requests\StoreloteRequest;
 use App\Http\Requests\UpdateloteRequest;

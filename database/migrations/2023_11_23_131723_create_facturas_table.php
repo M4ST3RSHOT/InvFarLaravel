@@ -20,9 +20,9 @@ return new class extends Migration
             $table->float('subtotal');
             $table->float('descuento');
             $table->float('total');
-            $table->unsignedBigInteger('personal_id');
+            $table->unsignedBigInteger('user_id');
 
-            $table->foreign('personal_id')->references('id')->on('personals')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
 
         });

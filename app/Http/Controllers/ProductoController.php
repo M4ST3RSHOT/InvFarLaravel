@@ -87,6 +87,23 @@ class ProductoController extends Controller
         return $this->index();
     }
 
+    public function updatestockplus(Request $request, $id)
+    {
+        $producto=producto::find($id);
+        if ($producto) {
+            // Obtener el stock enviado en la solicitud
+            $nuevoStock = $request->input('stock');
+    
+            // Calcular el stock actualizado restando el stock enviado del stock actual del producto
+            $stockActualizado = $producto->stock + $nuevoStock;
+    
+            // Actualizar el stock del producto
+            $producto->stock = $stockActualizado;
+            $producto->save();
+        }
+        return $this->index();
+    }
+
     /**
      * Remove the specified resource from storage.
      */

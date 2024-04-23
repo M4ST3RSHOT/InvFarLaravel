@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->string('nombre');
+            $table->string('cinit');
             $table->bigInteger('telefono');
             $table->string('direccion');
 
