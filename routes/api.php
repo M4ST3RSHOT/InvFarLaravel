@@ -39,6 +39,8 @@ Route::get('/categoria/productos/{id}',[CategoriaController::class,'productos'])
 
 Route::resource('/detalle', DetalleController::class);
 Route::resource('/factura', FacturaController::class);
+Route::get('/factura/detallar/{id}',[FacturaController::class,'detallar']);
+Route::get('/adquiere/detallar/{id}',[AdquiereController::class,'detallar']);
 
 Route::resource('/farmacia', FarmaciaController::class);
 Route::resource('/lote', LoteController::class);
