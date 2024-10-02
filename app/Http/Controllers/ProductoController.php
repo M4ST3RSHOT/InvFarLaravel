@@ -16,7 +16,11 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        return response()->json(producto::get());
+        $consultad=DB::select('SELECT p.id,p.codigo,p.nombre,p.descripcion,p.unidad,p.peso,c.nombre as categoria,p.precio_compra,p.precio_venta,p.imagen,p.stock
+        FROM productos p, categorias c
+        WHERE p.categoria_id=c.id');
+
+        return response()->json($consultad);
     }
 
     /**
@@ -34,6 +38,11 @@ class ProductoController extends Controller
     {
         $producto=producto::create($request->all());
         $producto2=producto::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+
+
+        // $consultad=DB::select('SELECT p.id,p.nombre,p.descripcion,p.unidad,c.nombre as categoria,p.precio_compra,p.precio_venta,p.imagen,p.stock
+        // FROM productos p, categorias c
+        // WHERE p.categoria_id=c.id');
 
         return response()->json($producto2);
     }
@@ -137,4 +146,16 @@ class ProductoController extends Controller
         $consulta = Producto::select('productos.nombre')->get();
         return response()->json($consulta);
     }
+
+
+    // public function listarproductoscategoria($id) //pareciese que tenemos esto repetido pero en el controlador de categoria
+    // {   
+
+    //     $consultad=DB::select('SELECT p.*
+    //     FROM productos p, categorias c
+    //     WHERE p.categoria_id=c.id and c.id=:id',['id' => $id]);
+
+    //     return response()->json($consultad);
+    // }
+
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\detalle;
 use App\Http\Requests\StoredetalleRequest;
 use App\Http\Requests\UpdatedetalleRequest;
+use Illuminate\Support\Facades\DB;
 
 class DetalleController extends Controller
 {
@@ -109,5 +110,27 @@ class DetalleController extends Controller
         }
         $detalle->delete();
         return $this->index();
+    }
+
+    public function mayorventasmes($mes,$gestion)
+    {   
+
+        $consultad=DB::select('SELECT p.nombre as name,sum(d.cantidad) as value
+        FROM detalles d, facturas f, productos p
+        WHERE f.id=d.factura_id and p.id=d.producto_id and Month(f.fecha)=:mes and Year(f.fecha)=:gestion
+        GROUP BY p.nombre',['mes' => $mes, 'gestion' => $gestion]);
+
+        return response()->json($consultad);
+    }
+
+    public function mayorventassemana($dia,$mes,$gestion)
+    {   
+
+        $consultad=DB::select('SELECT p.nombre as name,sum(d.cantidad) as value
+        FROM detalles d, facturas f, productos p
+        WHERE f.id=d.factura_id and p.id=d.producto_id and Day(f.fecha)>=:dia-7 and Month(f.fecha)=:mes and Year(f.fecha)=:gestion
+        GROUP BY p.nombre',['dia' => $dia,'mes' => $mes, 'gestion' => $gestion]);
+
+        return response()->json($consultad);
     }
 }

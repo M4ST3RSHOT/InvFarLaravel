@@ -38,12 +38,19 @@ Route::post('/categoria/imagen/',[CategoriaController::class,'imageUpload']);
 Route::get('/categoria/productos/{id}',[CategoriaController::class,'productos']);//ruta que devuelve toda la informacion de los productos cuya categoria sea igual al $id
 
 Route::resource('/detalle', DetalleController::class);
+
+Route::get('/detalle/mayorventasmes/{mes}/{gestion}',[DetalleController::class,'mayorventasmes']);
+Route::get('/detalle/mayorventassemana/{dia}/{mes}/{gestion}',[DetalleController::class,'mayorventassemana']);
+
 Route::resource('/factura', FacturaController::class);
 Route::get('/factura/detallar/{id}',[FacturaController::class,'detallar']);
 Route::get('/adquiere/detallar/{id}',[AdquiereController::class,'detallar']);
 
 Route::resource('/farmacia', FarmaciaController::class);
 Route::resource('/lote', LoteController::class);
+
+Route::get('/lote/productosporvencer/{dia}/{mes}/{gestion}',[LoteController::class,'productosporvencer']);
+
 Route::resource('/producto', ProductoController::class);
 
 Route::get('/producto/imagen/{imagen}',[ProductoController::class,'image']);
@@ -54,6 +61,9 @@ Route::put('/producto/stock/{id}',[ProductoController::class,'updatestock']);
 Route::put('/producto/stock/{id}',[ProductoController::class,'updatestockplus']);
 
 Route::resource('/proveedor', ProveedorController::class);
+
+Route::get('/proveedor/productos/{id}',[ProveedorController::class,'productos']);//ruta que devuelve toda la informacion de los productos cuyp proveedor sea igual al $id
+
 Route::resource('/cliente', ClienteController::class);
 
 Route::get('/cliente/imagen/{imagen}',[ClienteController::class,'image']);
