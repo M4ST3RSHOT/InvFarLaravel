@@ -21,10 +21,14 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
+
+        
+
         $request['password']=Hash::make($request['password']);
         $user=User::create($request->all());
         return response()->json($user);
     }
+    
 
     public function show($id)
     {

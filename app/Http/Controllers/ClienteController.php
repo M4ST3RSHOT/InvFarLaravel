@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+
 use App\Models\cliente;
-use App\Http\Requests\StoreclienteRequest;
-use App\Http\Requests\UpdateclienteRequest;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ClienteController extends Controller
 {
@@ -31,8 +30,16 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        $cliente=cliente::create($request->all());
-        $cliente2=cliente::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+
+        // Verificar si ya existe un producto con el mismo código
+        $clienteexistente = cliente::where('ci', $request->ci)->first();
+
+        if ($clienteexistente) {
+            return response()->json(['error' => 'El cliente ya está registrado.'], 400);
+        }
+
+        $cliente = cliente::create($request->all());
+        $cliente2 = cliente::get(); //esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
         return response()->json($cliente2);
     }
 
@@ -41,11 +48,13 @@ class ClienteController extends Controller
      */
     public function show(cliente $id)
     {
-        $cliente=cliente::find($id);
-        if($cliente)
+        $cliente = cliente::find($id);
+        if ($cliente) {
             return response()->json($cliente);
-        else
-        return response()->json('Usuario no Encontrado',409);
+        } else {
+            return response()->json('Usuario no Encontrado', 409);
+        }
+
     }
 
     /**
@@ -61,9 +70,16 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cliente=cliente::find($id);
-        if($cliente){
-            $cliente=$cliente->update($request->all());
+
+        // Verificar si ya existe un producto con el mismo código
+        $clienteexistente = cliente::where('ci', $request->ci)->first();
+
+        if ($clienteexistente) {
+            return response()->json(['error' => 'El cliente ya está registrado.'], 400);
+        }
+        $cliente = cliente::find($id);
+        if ($cliente) {
+            $cliente = $cliente->update($request->all());
         }
         return $this->index();
     }
@@ -71,29 +87,30 @@ class ClienteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
-        $cliente=cliente::find($id);
-        if(!$cliente){
-            return response()->json('usuario no encontrado',400);
+        $cliente = cliente::find($id);
+        if (!$cliente) {
+            return response()->json('usuario no encontrado', 400);
         }
         $cliente->delete();
         return $this->index();
     }
 
-    public function imageUpload(Request $request){
-        $imagen=$request->file('image');
-        $path_img='cliente';
-        $imageName = $path_img.'/'.$imagen->getClientOriginalName();
+    public function imageUpload(Request $request)
+    {
+        $imagen = $request->file('image');
+        $path_img = 'cliente';
+        $imageName = $path_img . '/' . $imagen->getClientOriginalName();
         try {
             Storage::disk('public')->put($imageName, File::get($imagen));
-        }
-        catch (\Exception $exception) {
-            return response('error',400);
+        } catch (\Exception $exception) {
+            return response('error', 400);
         }
         return response()->json(['image' => $imageName]);
     }
-    public function image($nombre){
-        return response()->download(public_path('storage').'/cliente/'.$nombre,$nombre);
+    public function image($nombre)
+    {
+        return response()->download(public_path('storage') . '/cliente/' . $nombre, $nombre);
     }
 }

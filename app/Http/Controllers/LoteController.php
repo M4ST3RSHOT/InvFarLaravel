@@ -110,7 +110,7 @@ class LoteController extends Controller
     $endDate = date('Y-m-d', strtotime("$currentDate +1 month"));
 
     // Ejecutar la consulta
-    $consultad = DB::select('SELECT p.nombre, c.nombre as categoria, p.peso, p.unidad, l.fecha_expiracion
+    $consultad = DB::select('SELECT p.nombre, c.nombre as categoria, p.peso, p.unidad, l.fecha_expiracion,l.stock as stockporvencer
                              FROM lotes l
                              JOIN productos p ON l.producto_id = p.id
                              JOIN categorias c ON p.categoria_id = c.id

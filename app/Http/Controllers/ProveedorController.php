@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\proveedor;
-use App\Http\Requests\StoreproveedorRequest;
-use App\Http\Requests\UpdateproveedorRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class ProveedorController extends Controller
 {
     /**
@@ -29,8 +29,8 @@ class ProveedorController extends Controller
      */
     public function store(Request $request)
     {
-        $proveedor=proveedor::create($request->all());
-        $proveedor2=proveedor::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+        $proveedor = proveedor::create($request->all());
+        $proveedor2 = proveedor::get(); //esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
 
         return response()->json($proveedor2);
     }
@@ -40,11 +40,13 @@ class ProveedorController extends Controller
      */
     public function show(proveedor $id)
     {
-        $proveedor=proveedor::find($id);
-        if($proveedor)
+        $proveedor = proveedor::find($id);
+        if ($proveedor) {
             return response()->json($proveedor);
-        else
-        return response()->json('Usuario no Encontrado',409);
+        } else {
+            return response()->json('Usuario no Encontrado', 409);
+        }
+
     }
 
     /**
@@ -60,9 +62,9 @@ class ProveedorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $proveedor=proveedor::find($id);
-        if($proveedor){
-            $proveedor=$proveedor->update($request->all());
+        $proveedor = proveedor::find($id);
+        if ($proveedor) {
+            $proveedor = $proveedor->update($request->all());
         }
         return $this->index();
     }
@@ -70,23 +72,23 @@ class ProveedorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
-        $proveedor=proveedor::find($id);
-        if(!$proveedor){
-            return response()->json('usuario no encontrado',400);
+        $proveedor = proveedor::find($id);
+        if (!$proveedor) {
+            return response()->json('usuario no encontrado', 400);
         }
         $proveedor->delete();
         return $this->index();
     }
 
+    public function productos($id)
+    {
 
-    public function productos($id){   
-
-        $consultad=DB::select('SELECT pr.nombre,pr.descripcion,pr.unidad,pr.peso,pr.imagen
+        $consultad = DB::select('SELECT pr.nombre,pr.descripcion,pr.unidad,pr.peso,pr.imagen
         FROM productos pr, lotes l, adquieres a
         WHERE pr.id=l.producto_id and l.adquiere_id=a.id and a.proveedor_id=:id
-        group by pr.nombre,pr.descripcion,pr.unidad,pr.peso,pr.imagen',['id' => $id]);
+        group by pr.nombre,pr.descripcion,pr.unidad,pr.peso,pr.imagen', ['id' => $id]);
 
         return response()->json($consultad);
     }

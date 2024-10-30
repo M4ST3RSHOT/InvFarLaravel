@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+
 use App\Models\categoria;
-use App\Http\Requests\StorecategoriaRequest;
-use App\Http\Requests\UpdatecategoriaRequest;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class CategoriaController extends Controller
 {
@@ -31,8 +30,15 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        $categoria=categoria::create($request->all());
-        $cateogira2=categoria::get();//esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
+        // Verificar si ya existe un producto con el mismo código
+        $categoriaexistente = categoria::where('nombre', $request->nombre)->first();
+
+        if ($categoriaexistente) {
+            return response()->json(['error' => 'La categoria ya está registrado.'], 400);
+        }
+
+        $categoria = categoria::create($request->all());
+        $cateogira2 = categoria::get(); //esto devuelve a la vista todos los registros creados contando el que se creeo recientemente
         return response()->json($cateogira2);
     }
 
@@ -41,11 +47,13 @@ class CategoriaController extends Controller
      */
     public function show(categoria $id)
     {
-        $id=categoria::find($id);
-        if($categoria)
+        $id = categoria::find($id);
+        if ($categoria) {
             return response()->json($categoria);
-        else
-        return response()->json('Usuario no Encontrado',409);
+        } else {
+            return response()->json('Usuario no Encontrado', 409);
+        }
+
     }
 
     /**
@@ -59,11 +67,18 @@ class CategoriaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $categoria=categoria::find($id);
-        if($categoria){
-            $categoria=$categoria->update($request->all());
+
+        // Verificar si ya existe un producto con el mismo código
+        $categoriaexistente = categoria::where('nombre', $request->nombre)->first();
+
+        if ($categoriaexistente) {
+            return response()->json(['error' => 'La categoria ya está registrado.'], 400);
+        }
+        $categoria = categoria::find($id);
+        if ($categoria) {
+            $categoria = $categoria->update($request->all());
         }
         return $this->index();
     }
@@ -73,33 +88,34 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
-        $categoria=categoria::find($id);
-        if(!$categoria){
-            return response()->json('usuario no encontrado',400);
+        $categoria = categoria::find($id);
+        if (!$categoria) {
+            return response()->json('usuario no encontrado', 400);
         }
         $categoria->delete();
         return $this->index();
     }
 
-    public function imageUpload(Request $request){
-        $imagen=$request->file('image');
-        $path_img='categoria';
-        $imageName = $path_img.'/'.$imagen->getClientOriginalName();
+    public function imageUpload(Request $request)
+    {
+        $imagen = $request->file('image');
+        $path_img = 'categoria';
+        $imageName = $path_img . '/' . $imagen->getClientOriginalName();
         try {
             Storage::disk('public')->put($imageName, File::get($imagen));
-        }
-        catch (\Exception $exception) {
-            return response('error',400);
+        } catch (\Exception $exception) {
+            return response('error', 400);
         }
         return response()->json(['image' => $imageName]);
     }
-    public function image($nombre){
-        return response()->download(public_path('storage').'/categoria/'.$nombre,$nombre);
+    public function image($nombre)
+    {
+        return response()->download(public_path('storage') . '/categoria/' . $nombre, $nombre);
     }
 
-
-    public function productos($id){
-        $productos=Categoria::Productos($id);
+    public function productos($id)
+    {
+        $productos = Categoria::Productos($id);
         return response()->json($productos);
     }
 
