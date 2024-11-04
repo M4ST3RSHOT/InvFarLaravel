@@ -75,12 +75,6 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
 
-        // Verificar si ya existe un producto con el mismo código
-        $userexistente = User::where('ci', $request->ci)->first();
-
-        if ($userexistente) {
-            return response()->json(['error' => 'El usuario ya está registrado.'], 400);
-        }
         $user = user::find($id);
         if ($user) {
             $user = $user->update($request->all());

@@ -145,12 +145,6 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Verificar si ya existe un producto con el mismo código
-        $productoExistente = producto::where('codigo', $request->codigo)->first();
-
-        if ($productoExistente) {
-            return response()->json(['error' => 'El código ya está registrado.'], 400);
-        }
 
         $producto = producto::find($id);
         if ($producto) {
@@ -228,16 +222,6 @@ class ProductoController extends Controller
         $consulta = Producto::select('productos.nombre')->get();
         return response()->json($consulta);
     }
-
-    // public function listarproductoscategoria($id) //pareciese que tenemos esto repetido pero en el controlador de categoria
-    // {
-
-    //     $consultad=DB::select('SELECT p.*
-    //     FROM productos p, categorias c
-    //     WHERE p.categoria_id=c.id and c.id=:id',['id' => $id]);
-
-    //     return response()->json($consultad);
-    // }
 
     public function reporte($dia1, $mes1, $gestion1, $dia2, $mes2, $gestion2) //devuelve la lista de productos con sus respectivas fechas de expiracvion
     {

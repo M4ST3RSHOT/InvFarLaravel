@@ -71,12 +71,6 @@ class ClienteController extends Controller
     public function update(Request $request, $id)
     {
 
-        // Verificar si ya existe un producto con el mismo código
-        $clienteexistente = cliente::where('ci', $request->ci)->first();
-
-        if ($clienteexistente) {
-            return response()->json(['error' => 'El cliente ya está registrado.'], 400);
-        }
         $cliente = cliente::find($id);
         if ($cliente) {
             $cliente = $cliente->update($request->all());

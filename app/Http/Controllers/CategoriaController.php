@@ -70,12 +70,6 @@ class CategoriaController extends Controller
     public function update(Request $request, $id)
     {
 
-        // Verificar si ya existe un producto con el mismo código
-        $categoriaexistente = categoria::where('nombre', $request->nombre)->first();
-
-        if ($categoriaexistente) {
-            return response()->json(['error' => 'La categoria ya está registrado.'], 400);
-        }
         $categoria = categoria::find($id);
         if ($categoria) {
             $categoria = $categoria->update($request->all());
