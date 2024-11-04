@@ -59,6 +59,7 @@ Route::put('/producto/stock/{id}', [ProductoController::class, 'updatestock']);
 Route::put('/producto/stock/{id}', [ProductoController::class, 'updatestockplus']);
 Route::get('/producto/reporte/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}', [ProductoController::class, 'reporte']);
 Route::get('/producto/reporteinventariogeneral/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}', [ProductoController::class, 'reporteinventariogeneral']);
+Route::get('/producto/reportedemovimientodeproducto/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}/{codigo}', [ProductoController::class, 'reportedemovimientodeproducto']);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::resource('/proveedor', ProveedorController::class);
 Route::get('/proveedor/productos/{id}', [ProveedorController::class, 'productos']); //ruta que devuelve toda la informacion de los productos cuyp proveedor sea igual al $id

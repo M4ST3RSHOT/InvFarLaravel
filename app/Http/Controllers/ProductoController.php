@@ -260,7 +260,7 @@ class ProductoController extends Controller
 
         // Ejecutar la consulta para obtener todos los productos
 
-        $todosProductos = DB::select('SELECT p.id,p.codigo,p.nombre,p.descripcion,p.unidad,p.peso,c.nombre as categoria,p.precio_compra,p.precio_venta,p.imagen,p.stock
+        $todosProductos = DB::select('SELECT p.id,p.codigo,p.nombre,p.descripcion,p.unidad,p.peso,c.nombre as categoria,p.precio_compra,p.precio_venta,p.stock
         FROM productos p, categorias c
         WHERE p.categoria_id=c.id');
 
@@ -268,6 +268,44 @@ class ProductoController extends Controller
         $respuesta = [
             'productos_entre_fechas' => $consultad,
             'todos_los_productos' => $todosProductos,
+        ];
+
+        // Devolver los resultados en formato JSON
+        return response()->json($respuesta);
+    }
+    public function reportedemovimientodeproducto($dia1, $mes1, $gestion1, $dia2, $mes2, $gestion2, $codigo)
+    {
+        $currentDate = "$gestion1-$mes1-$dia1";
+        $endDate = "$gestion2-$mes2-$dia2";
+
+        // Consulta para ventas
+        $consultaventas = DB::select('SELECT p.codigo,p.nombre,CONCAT(u.nombre, " ", u.apellido) AS usuario,CONCAT(c.nombre, " ", c.apellido, " ", c.ci) AS cliente,f.fecha,de.cantidad
+            FROM users u
+            JOIN facturas f ON u.id = f.user_id
+            JOIN detalles de ON f.id = de.factura_id
+            JOIN productos p ON de.producto_id = p.id
+            JOIN clientes c ON f.cliente_id = c.id
+            WHERE f.fecha BETWEEN :currentDate AND :endDate
+            AND p.codigo = :codigo',
+            ['currentDate' => $currentDate, 'endDate' => $endDate, 'codigo' => $codigo]
+        );
+
+        // Consulta para compras
+        $consultacompras = DB::select('SELECT p.codigo,p.nombre,CONCAT(u.nombre, " ", u.apellido) AS usuario,CONCAT(c.nombre, " ", c.cinit) AS proveedor,f.fecha,l.stock
+            FROM users u
+            JOIN adquieres f ON u.id = f.user_id
+            JOIN lotes l ON f.id = l.adquiere_id
+            JOIN productos p ON l.producto_id = p.id
+            JOIN proveedors c ON f.proveedor_id = c.id
+            WHERE f.fecha BETWEEN :currentDate AND :endDate
+            AND p.codigo = :codigo',
+            ['currentDate' => $currentDate, 'endDate' => $endDate, 'codigo' => $codigo]
+        );
+
+        // Crear una respuesta combinada
+        $respuesta = [
+            'productos_compras' => $consultacompras,
+            'productos_ventas' => $consultaventas,
         ];
 
         // Devolver los resultados en formato JSON
