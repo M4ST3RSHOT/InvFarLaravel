@@ -117,11 +117,12 @@ class AdquiereController extends Controller
         $endDate = "$gestion2-$mes2-$dia2";
 
         // Ejecutar la consulta
-        $consultad = DB::select('SELECT a.id,a.fecha,pr.nombre as proveedor,p.nombre as producto,l.stock,l.fecha_expiracion,a.montototal
+        $consultad = DB::select('SELECT a.id,a.fecha,CONCAT(pr.nombre, " ", pr.cinit) as proveedor,CONCAT(u.nombre, " ", u.apellido) AS usuario ,p.nombre as producto,l.stock,l.fecha_expiracion,a.montototal
                                  FROM lotes l
                                  JOIN adquieres a ON l.adquiere_id = a.id
                                  JOIN proveedors pr ON a.proveedor_id = pr.id
                                  JOIN productos p ON l.producto_id = p.id
+                                 JOIN users u ON a.user_id = u.id
                                  WHERE a.fecha BETWEEN :currentDate AND :endDate',
             ['currentDate' => $currentDate, 'endDate' => $endDate]);
 

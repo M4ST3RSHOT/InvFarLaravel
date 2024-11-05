@@ -43,6 +43,7 @@ Route::get('/detalle/mayorventassemana/{dia}/{mes}/{gestion}', [DetalleControlle
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::resource('/factura', FacturaController::class);
 Route::get('/factura/reporte/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}', [FacturaController::class, 'reporte']);
+Route::get('/factura/ventasporusuario/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}/{ci}', [FacturaController::class, 'ventasporusuario']);
 Route::get('/factura/detallar/{id}', [FacturaController::class, 'detallar']);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::resource('/farmacia', FarmaciaController::class);

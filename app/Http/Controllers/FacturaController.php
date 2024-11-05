@@ -103,19 +103,27 @@ class FacturaController extends Controller
         $endDate = "$gestion2-$mes2-$dia2";
 
         // Ejecutar la consulta
-        $consultad = DB::select('SELECT f.id,f.fecha,c.nombre,c.apellido,p.nombre as producto,d.cantidad,f.descuento,f.total
-                                 FROM detalles d,facturas f,clientes c,productos p
-                                 WHERE f.id=d.factura_id and c.id=f.cliente_id and p.id=d.producto_id
+        $consultad = DB::select('SELECT f.id,f.fecha,CONCAT(c.nombre, " ", c.apellido, " ",c.ci) AS cliente,CONCAT(u.nombre, " ", u.apellido) AS usuario,p.nombre as producto,d.cantidad,f.descuento,f.total
+                                 FROM users u,detalles d,facturas f,clientes c,productos p
+                                 WHERE f.id=d.factura_id and c.id=f.cliente_id and p.id=d.producto_id and u.id=f.user_id
                                  AND f.fecha BETWEEN :currentDate AND :endDate',
             ['currentDate' => $currentDate, 'endDate' => $endDate]);
-        // Devolver los resultados en formato JSON
-
-        // $consultad=DB::select('SELECT p.nombre as name,sum(d.cantidad) as value
-        // FROM detalles d, facturas f, productos p
-        // WHERE f.id=d.factura_id and p.id=d.producto_id and Day(f.fecha)>=:dia-7 and Month(f.fecha)=:mes and Year(f.fecha)=:gestion
-        // GROUP BY p.nombre',['dia' => $dia,'mes' => $mes, 'gestion' => $gestion]);
-
         return response()->json($consultad);
     }
+    public function ventasporusuario($dia1, $mes1, $gestion1, $dia2, $mes2, $gestion2, $ci)
+    {
+        // Convertir día, mes y año en una fecha
+        $currentDate = "$gestion1-$mes1-$dia1";
 
+        // Calcular la fecha límite (un mes después)
+        $endDate = "$gestion2-$mes2-$dia2";
+
+        // Ejecutar la consulta
+        $consultad = DB::select('SELECT CONCAT(u.nombre, " ", u.apellido) AS usuario, u.ci,f.id,f.fecha,p.nombre,f.descuento,f.total
+                                 FROM users u,detalles d,facturas f,clientes c,productos p
+                                 WHERE f.id=d.factura_id and c.id=f.cliente_id and p.id=d.producto_id and u.id=f.user_id
+                                 AND f.fecha BETWEEN :currentDate AND :endDate and u.ci=:ci',
+            ['currentDate' => $currentDate, 'endDate' => $endDate, 'ci' => $ci]);
+        return response()->json($consultad);
+    }
 }
