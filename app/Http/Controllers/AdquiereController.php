@@ -73,6 +73,35 @@ class AdquiereController extends Controller
 
     }
 
+    public function detallarpdf($id)
+    {
+
+        $consultaa = DB::select('SELECT a.*
+                            FROM adquieres a
+                            WHERE a.id=:id', ['id' => $id]);
+        $consultal = DB::select('SELECT l.stock as cantidad ,p.*
+        FROM lotes l, adquieres a, productos p
+        WHERE a.id=l.adquiere_id and p.id=l.producto_id and a.id=:id', ['id' => $id]);
+
+        $consultap = DB::select('SELECT p.nombre,p.telefono, p.direccion,p.cinit
+        FROM adquieres a, proveedors p
+        WHERE p.id=a.proveedor_id and a.id=:id GROUP BY p.nombre,p.telefono, p.direccion,p.cinit ', ['id' => $id]);
+
+        $consultau = DB::select('SELECT u.nombre,u.apellido
+        FROM adquieres a,users u
+        WHERE u.id=a.user_id and a.id=:id', ['id' => $id]);
+
+        $respuesta = [
+            'consulta_adquiere' => $consultaa,
+            'consulta_lote' => $consultal,
+            'consulta_proveedor' => $consultap,
+            'consulta_usuario' => $consultau,
+        ];
+
+        return response()->json($respuesta);
+
+    }
+
     /**
      * Update the specified resource in storage.
      */

@@ -39,6 +39,34 @@ class FacturaController extends Controller
         return response()->json([$consultaf, [$consultad], $consultac, $consultau]);
     }
 
+    public function detallarpdf($id)
+    {
+
+        $consultaf = DB::select('SELECT f.*
+                            FROM facturas f
+                            WHERE f.id=:id', ['id' => $id]);
+        $consultad = DB::select('SELECT d.cantidad,p.nombre,p.codigo,p.descripcion,p.peso,p.unidad,p.precio_venta
+        FROM detalles d, facturas f, productos p
+        WHERE f.id=d.factura_id and p.id=d.producto_id and f.id=:id', ['id' => $id]);
+
+        $consultac = DB::select('SELECT c.nombre,c.apellido, c.ci
+        FROM productos p, detalles d, facturas f,clientes c
+        WHERE c.id=f.cliente_id and f.id=d.factura_id and d.producto_id=p.id and f.id=:id GROUP BY c.nombre,c.apellido, c.ci', ['id' => $id]);
+
+        $consultau = DB::select('SELECT u.nombre,u.apellido
+        FROM facturas f,users u
+        WHERE u.id=f.user_id and f.id=:id', ['id' => $id]);
+
+        $respuesta = [
+            'consulta_factura' => $consultaf,
+            'consulta_detalle' => $consultad,
+            'consulta_cliente' => $consultac,
+            'consulta_usuario' => $consultau,
+        ];
+
+        return response()->json($respuesta);
+    }
+
     // public function detalledeventa_detalle($id){
 
     //     // $consulta=DB::select('SELECT d.id,d.codigo,concat(p.nombre," ",t.descripcion ," ", d.descripcion) as descripcion,d.stock,d.precio_compra,d.precio_venta,d.cantidad_minima FROM products p,tipos t,detalles d WHERE t.id_producto=p.id and d.id_tipo=t.id and p.lugar=:id',['id'=> $id]);
