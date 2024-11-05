@@ -126,4 +126,85 @@ class FacturaController extends Controller
             ['currentDate' => $currentDate, 'endDate' => $endDate, 'ci' => $ci]);
         return response()->json($consultad);
     }
+
+    public function reportedeingresos($dia1, $mes1, $gestion1, $dia2, $mes2, $gestion2)
+    {
+        // Convertir día, mes y año en una fecha
+        $currentDate = "$gestion1-$mes1-$dia1";
+
+        // Calcular la fecha límite (un mes después)
+        $endDate = "$gestion2-$mes2-$dia2";
+
+        // Ejecutar la consulta
+        $reportedeingresos = DB::select('SELECT f.id,f.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,p.nombre as producto,d.cantidad,f.subtotal,f.descuento,f.total
+                                 FROM users u,detalles d,facturas f,clientes c,productos p
+                                 WHERE f.id=d.factura_id and c.id=f.cliente_id and p.id=d.producto_id and u.id=f.user_id
+                                 AND f.fecha BETWEEN :currentDate AND :endDate',
+            ['currentDate' => $currentDate, 'endDate' => $endDate]);
+
+        $gananciatotal = DB::select('SELECT SUM(f.subtotal) as subtotal , SUM(f.total) as total
+                                 FROM users u,detalles d,facturas f,clientes c,productos p
+                                 WHERE f.id=d.factura_id and c.id=f.cliente_id and p.id=d.producto_id and u.id=f.user_id
+                                 AND f.fecha BETWEEN :currentDate AND :endDate',
+            ['currentDate' => $currentDate, 'endDate' => $endDate]);
+
+        // Crear una respuesta combinada
+        $respuesta = [
+            'reporte_ingresos' => $reportedeingresos,
+            'ganancia_total' => $gananciatotal,
+        ];
+
+        return response()->json($respuesta);
+    }
+
+    public function reporteeconomicogeneral($dia1, $mes1, $gestion1, $dia2, $mes2, $gestion2)
+    {
+        // Convertir día, mes y año en una fecha
+        $currentDate = "$gestion1-$mes1-$dia1";
+
+        // Calcular la fecha límite (un mes después)
+        $endDate = "$gestion2-$mes2-$dia2";
+
+        // Ejecutar la consulta
+        $reportedeingresos = DB::select('SELECT f.id,f.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,p.nombre as producto,d.cantidad,f.subtotal,f.descuento,f.total
+                                 FROM users u,detalles d,facturas f,clientes c,productos p
+                                 WHERE f.id=d.factura_id and c.id=f.cliente_id and p.id=d.producto_id and u.id=f.user_id
+                                 AND f.fecha BETWEEN :currentDate AND :endDate',
+            ['currentDate' => $currentDate, 'endDate' => $endDate]);
+
+        $gananciatotalingresos = DB::select('SELECT SUM(f.subtotal) as subtotal , SUM(f.total) as total
+                                 FROM users u,detalles d,facturas f,clientes c,productos p
+                                 WHERE f.id=d.factura_id and c.id=f.cliente_id and p.id=d.producto_id and u.id=f.user_id
+                                 AND f.fecha BETWEEN :currentDate AND :endDate',
+            ['currentDate' => $currentDate, 'endDate' => $endDate]);
+
+        $reportedeegresos = DB::select('SELECT a.id,a.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,CONCAT(pr.nombre, " ", pr.cinit) as proveedor,p.nombre as producto,l.stock,a.montototal
+                                 FROM lotes l
+                                 JOIN adquieres a ON l.adquiere_id = a.id
+                                 JOIN proveedors pr ON a.proveedor_id = pr.id
+                                 JOIN productos p ON l.producto_id = p.id
+                                 JOIN users u ON a.user_id = u.id
+                                 WHERE a.fecha BETWEEN :currentDate AND :endDate',
+            ['currentDate' => $currentDate, 'endDate' => $endDate]);
+
+        $gananciatotalegresos = DB::select('SELECT SUM(a.montototal) as montototal
+                                 FROM lotes l
+                                 JOIN adquieres a ON l.adquiere_id = a.id
+                                 JOIN proveedors pr ON a.proveedor_id = pr.id
+                                 JOIN productos p ON l.producto_id = p.id
+                                 JOIN users u ON a.user_id = u.id
+                                 WHERE a.fecha BETWEEN :currentDate AND :endDate',
+            ['currentDate' => $currentDate, 'endDate' => $endDate]);
+
+        // Crear una respuesta combinada
+        $respuesta = [
+            'reporte_ingresos' => $reportedeingresos,
+            'reporte_egresos' => $reportedeegresos,
+            'ganancia_total_ingresos' => $gananciatotalingresos,
+            'ganancia_total_egresos' => $gananciatotalegresos,
+        ];
+
+        return response()->json($respuesta);
+    }
+
 }

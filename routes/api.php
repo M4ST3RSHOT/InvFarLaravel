@@ -30,6 +30,7 @@ Route::resource('/adquiere', AdquiereController::class);
 Route::get('/adquiere/reporte/{id}', [AdquiereController::class, 'reporte']);
 Route::get('/adquiere/detallar/{id}', [AdquiereController::class, 'detallar']);
 Route::get('/adquiere/reporte/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}', [AdquiereController::class, 'reporte']);
+Route::get('/adquiere/reportedeegresos/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}', [AdquiereController::class, 'reportedeegresos']);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::resource('/categoria', CategoriaController::class);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +44,8 @@ Route::get('/detalle/mayorventassemana/{dia}/{mes}/{gestion}', [DetalleControlle
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::resource('/factura', FacturaController::class);
 Route::get('/factura/reporte/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}', [FacturaController::class, 'reporte']);
+Route::get('/factura/reportedeingresos/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}', [FacturaController::class, 'reportedeingresos']);
+Route::get('/factura/reporteeconomicogeneral/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}', [FacturaController::class, 'reporteeconomicogeneral']);
 Route::get('/factura/ventasporusuario/{dia1}/{mes1}/{gestion1}/{dia2}/{mes2}/{gestion2}/{ci}', [FacturaController::class, 'ventasporusuario']);
 Route::get('/factura/detallar/{id}', [FacturaController::class, 'detallar']);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

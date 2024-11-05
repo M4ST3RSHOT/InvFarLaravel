@@ -129,4 +129,39 @@ class AdquiereController extends Controller
         // Devolver los resultados en formato JSON
         return response()->json($consultad);
     }
+    public function reportedeegresos($dia1, $mes1, $gestion1, $dia2, $mes2, $gestion2)
+    {
+        // Convertir día, mes y año en una fecha
+        $currentDate = "$gestion1-$mes1-$dia1";
+
+        // Calcular la fecha límite (un mes después)
+        $endDate = "$gestion2-$mes2-$dia2";
+
+        // Ejecutar la consulta
+        $reportedeegresos = DB::select('SELECT a.id,a.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,CONCAT(pr.nombre, " ", pr.cinit) as proveedor,p.nombre as producto,l.stock,a.montototal
+                                 FROM lotes l
+                                 JOIN adquieres a ON l.adquiere_id = a.id
+                                 JOIN proveedors pr ON a.proveedor_id = pr.id
+                                 JOIN productos p ON l.producto_id = p.id
+                                 JOIN users u ON a.user_id = u.id
+                                 WHERE a.fecha BETWEEN :currentDate AND :endDate',
+            ['currentDate' => $currentDate, 'endDate' => $endDate]);
+
+        $gananciatotal = DB::select('SELECT SUM(a.montototal) as montototal
+                                 FROM lotes l
+                                 JOIN adquieres a ON l.adquiere_id = a.id
+                                 JOIN proveedors pr ON a.proveedor_id = pr.id
+                                 JOIN productos p ON l.producto_id = p.id
+                                 JOIN users u ON a.user_id = u.id
+                                 WHERE a.fecha BETWEEN :currentDate AND :endDate',
+            ['currentDate' => $currentDate, 'endDate' => $endDate]);
+
+        // Crear una respuesta combinada
+        $respuesta = [
+            'reporte_egresos' => $reportedeegresos,
+            'ganancia_total' => $gananciatotal,
+        ];
+
+        return response()->json($respuesta);
+    }
 }
