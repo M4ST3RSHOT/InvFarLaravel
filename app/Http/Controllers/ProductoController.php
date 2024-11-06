@@ -15,7 +15,7 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $consultad = DB::select('SELECT p.id,p.codigo,p.nombre,p.descripcion,p.unidad,p.peso,c.nombre as categoria,p.precio_compra,p.precio_venta,p.imagen,p.stock
+        $consultad = DB::select('SELECT p.id,p.codigo,p.nombre,p.descripcion,p.unidad,p.peso,c.nombre as categoria,p.precio_compra,p.precio_venta,p.imagen,p.stock,p.stockdeseado
         FROM productos p, categorias c
         WHERE p.categoria_id=c.id');
 
@@ -260,7 +260,7 @@ class ProductoController extends Controller
 
         // Ejecutar la consulta para obtener todos los productos
 
-        $todosProductos = DB::select('SELECT p.id,p.codigo,p.nombre,p.descripcion,p.unidad,p.peso,c.nombre as categoria,p.precio_compra,p.precio_venta,p.stock
+        $todosProductos = DB::select('SELECT p.id,p.codigo,p.nombre,p.descripcion,p.unidad,p.peso,c.nombre as categoria,p.precio_compra,p.precio_venta,p.stock,p.stockdeseado
         FROM productos p, categorias c
         WHERE p.categoria_id=c.id');
 

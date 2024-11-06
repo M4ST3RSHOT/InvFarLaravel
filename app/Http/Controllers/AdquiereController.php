@@ -167,7 +167,7 @@ class AdquiereController extends Controller
         $endDate = "$gestion2-$mes2-$dia2";
 
         // Ejecutar la consulta
-        $reportedeegresos = DB::select('SELECT a.id,a.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,CONCAT(pr.nombre, " ", pr.cinit) as proveedor,p.nombre as producto,l.stock,a.montototal
+        $reportedeegresos = DB::select('SELECT a.id,a.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,CONCAT(pr.nombre, " ", pr.cinit) as proveedor,p.nombre as producto,p.precio_compra,l.stock,a.montototal
                                  FROM lotes l
                                  JOIN adquieres a ON l.adquiere_id = a.id
                                  JOIN proveedors pr ON a.proveedor_id = pr.id

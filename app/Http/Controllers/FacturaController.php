@@ -164,7 +164,7 @@ class FacturaController extends Controller
         $endDate = "$gestion2-$mes2-$dia2";
 
         // Ejecutar la consulta
-        $reportedeingresos = DB::select('SELECT f.id,f.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,p.nombre as producto,d.cantidad,f.subtotal,f.descuento,f.total
+        $reportedeingresos = DB::select('SELECT f.id,f.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,p.nombre as producto,p.precio_venta,d.cantidad,f.subtotal,f.descuento,f.total
                                  FROM users u,detalles d,facturas f,clientes c,productos p
                                  WHERE f.id=d.factura_id and c.id=f.cliente_id and p.id=d.producto_id and u.id=f.user_id
                                  AND f.fecha BETWEEN :currentDate AND :endDate',
@@ -194,7 +194,7 @@ class FacturaController extends Controller
         $endDate = "$gestion2-$mes2-$dia2";
 
         // Ejecutar la consulta
-        $reportedeingresos = DB::select('SELECT f.id,f.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,p.nombre as producto,d.cantidad,f.subtotal,f.descuento,f.total
+        $reportedeingresos = DB::select('SELECT f.id,f.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,p.nombre as producto,p.precio_venta,d.cantidad,f.subtotal,f.descuento,f.total
                                  FROM users u,detalles d,facturas f,clientes c,productos p
                                  WHERE f.id=d.factura_id and c.id=f.cliente_id and p.id=d.producto_id and u.id=f.user_id
                                  AND f.fecha BETWEEN :currentDate AND :endDate',
@@ -206,7 +206,7 @@ class FacturaController extends Controller
                                  AND f.fecha BETWEEN :currentDate AND :endDate',
             ['currentDate' => $currentDate, 'endDate' => $endDate]);
 
-        $reportedeegresos = DB::select('SELECT a.id,a.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,CONCAT(pr.nombre, " ", pr.cinit) as proveedor,p.nombre as producto,l.stock,a.montototal
+        $reportedeegresos = DB::select('SELECT a.id,a.fecha,CONCAT(u.nombre, " ", u.apellido) AS usuario,CONCAT(pr.nombre, " ", pr.cinit) as proveedor,p.precio_compra,p.nombre as producto,l.stock,a.montototal
                                  FROM lotes l
                                  JOIN adquieres a ON l.adquiere_id = a.id
                                  JOIN proveedors pr ON a.proveedor_id = pr.id

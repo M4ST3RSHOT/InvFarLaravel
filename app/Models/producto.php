@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class producto extends Model
 {
     use HasFactory;
-    protected $fillable=[
+    protected $fillable = [
         'nombre',
         'codigo',
         'descripcion',
@@ -19,6 +19,7 @@ class producto extends Model
         'precio_venta',
         'imagen',
         'stock',
+        'stockdeseado',
     ];
 
     // public function scopelistar_nombres($query,$id){

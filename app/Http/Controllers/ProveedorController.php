@@ -85,10 +85,10 @@ class ProveedorController extends Controller
     public function productos($id)
     {
 
-        $consultad = DB::select('SELECT pr.nombre,pr.descripcion,pr.unidad,pr.peso,pr.imagen
+        $consultad = DB::select('SELECT pr.nombre,pr.codigo,pr.descripcion,pr.unidad,pr.peso,pr.imagen
         FROM productos pr, lotes l, adquieres a
         WHERE pr.id=l.producto_id and l.adquiere_id=a.id and a.proveedor_id=:id
-        group by pr.nombre,pr.descripcion,pr.unidad,pr.peso,pr.imagen', ['id' => $id]);
+        group by pr.nombre,pr.codigo,pr.descripcion,pr.unidad,pr.peso,pr.imagen', ['id' => $id]);
 
         return response()->json($consultad);
     }
